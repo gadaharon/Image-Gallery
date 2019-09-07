@@ -29,6 +29,19 @@ namespace BAL
 		private Bal()
 		{
 		}
+
+		public IEnumerable<Image> GetImages()
+		{
+			DataTable images = Dal.Instance.GetImages();
+
+			IEnumerable<Image> query = from image in images.AsEnumerable() select new Image() {
+				Uri = image.Field<string>("Uri"),
+				Height = image.Field<int>("Height"),
+				Width = image.Field<int>("Width")
+			};
+
+			return query;
+		}
 		public Image createImage(Image image)
 		{
 			DataSet data = Dal.Instance.CreateImage(image.Uri, image.Height, image.Width);

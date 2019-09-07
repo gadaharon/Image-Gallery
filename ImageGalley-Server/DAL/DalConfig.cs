@@ -7,6 +7,6 @@ namespace DAL
 {
 	public class DalConfig
 	{
-		protected static readonly string ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Projects\image-gallery\ImageGalley-Server\ImageGallery\App_Data\images.mdf;Integrated Security=True";
+		protected static readonly string ConnectionString = @"Data Source=.;Initial Catalog=Gallery;Integrated Security=True";
 	}
 }

@@ -11,9 +11,9 @@ namespace ImageGallery.Controllers
     public class ImagesController : ApiController
     {
         // GET: api/Images
-        public IEnumerable<string> Get()
+        public IEnumerable<Image> Get()
         {
-            return new string[] { "value1", "value2" };
+			return Bal.Instance.GetImages();
         }
 
         // GET: api/Images/5

@@ -36,6 +36,35 @@ namespace DAL
 		}
 
 		// Get All Images
+		public DataTable GetImages()
+		{
+			try
+			{
+				Connection.Open();
+				SqlCommand command = new SqlCommand("GetImages", Connection);
+				SqlDataAdapter adapter = new SqlDataAdapter(command);
+
+				DataSet data = new DataSet();
+
+				adapter.Fill(data);
+
+				DataTable images = data.Tables[0];
+
+				return images;
+			}
+			catch (Exception e)
+			{
+
+				throw new Exception(e.Message);
+			}
+			finally
+			{
+				if (Connection != null && Connection.State == ConnectionState.Open)
+				{
+					Connection.Close();
+				}
+			}
+		}
 
 		// Create Image
 		public DataSet CreateImage(string Uri, int Height, int Width)
@@ -43,17 +72,18 @@ namespace DAL
 			try
 			{
 				Connection.Open();
+				
 				SqlCommand command = new SqlCommand("CreateImage", Connection);
 				command.CommandType = CommandType.StoredProcedure;
 				command.Parameters.Add(new SqlParameter("Uri", Uri));
 				command.Parameters.Add(new SqlParameter("Height", Height));
 				command.Parameters.Add(new SqlParameter("Width", Width));
-
+				
 				SqlDataAdapter adapter = new SqlDataAdapter(command);
 
 				DataSet data = new DataSet();
 
-				int rows = adapter.Fill(data);
+				adapter.Fill(data);
 
 				return data;
 			}
