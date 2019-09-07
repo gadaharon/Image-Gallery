@@ -1,4 +1,4 @@
-﻿using ImageGallery.BAL;
+﻿using BAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +25,7 @@ namespace ImageGallery.Controllers
         // POST: api/Images
         public Image Post([FromBody]Image image)
         {
-			return image; 
+			return Bal.Instance.createImage(image); 
         }
 
         // PUT: api/Images/5

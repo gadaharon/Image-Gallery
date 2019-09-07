@@ -108,9 +108,9 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ImageGallery.BAL\ImageGallery.BAL.csproj">
-      <Project>{daac6402-1916-417e-bd27-c20b1ae8827a}</Project>
-      <Name>ImageGallery.BAL</Name>
+    <ProjectReference Include="..\BAL\BAL.csproj">
+      <Project>{34bd13b4-a733-4f12-8e5f-a8d8433d6a0e}</Project>
+      <Name>BAL</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
