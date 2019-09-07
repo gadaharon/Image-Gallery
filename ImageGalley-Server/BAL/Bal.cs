@@ -42,7 +42,7 @@ namespace BAL
 
 			return query;
 		}
-		public Image createImage(Image image)
+		public Image CreateImage(Image image)
 		{
 			DataSet data = Dal.Instance.CreateImage(image.Uri, image.Height, image.Width);
 

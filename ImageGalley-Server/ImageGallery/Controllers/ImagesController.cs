@@ -25,7 +25,7 @@ namespace ImageGallery.Controllers
         // POST: api/Images
         public Image Post([FromBody]Image image)
         {
-			return Bal.Instance.createImage(image); 
+			return Bal.Instance.CreateImage(image); 
         }
 
         // PUT: api/Images/5
