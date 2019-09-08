@@ -1,9 +1,10 @@
 ﻿using DAL;
+using CLOUDINARY;
 using System;
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Threading.Tasks;
 
 namespace BAL
 {
@@ -29,39 +30,53 @@ namespace BAL
 		private Bal()
 		{
 		}
+		
 
-		public IEnumerable<Image> GetImages()
+		public IEnumerable<ImageUploadResponse> GetImages()
 		{
+			// Get data from DB
 			DataTable images = Dal.Instance.GetImages();
-
-			IEnumerable<Image> query = from image in images.AsEnumerable() select new Image() {
+			if(images == null)
+			{
+				return null;
+			}
+			IEnumerable<ImageUploadResponse> query = from image in images.AsEnumerable() select new ImageUploadResponse() {
+				Id = image.Field<int>("Id"),
+				ImageId = image.Field<string>("ImageId"),
 				Uri = image.Field<string>("Uri"),
 				Height = image.Field<int>("Height"),
-				Width = image.Field<int>("Width")
+				Width = image.Field<int>("Width"),
+				Format = image.Field<string>("Format"),
+				CreatedAt = image.Field<string>("CreatedAt")
 			};
 
 			return query;
 		}
-		public Image CreateImage(Image image)
+		public async Task<ImageUploadResponse> CreateImage(string base64)
 		{
-			DataSet data = Dal.Instance.CreateImage(image.Uri, image.Height, image.Width);
+			// Upload image to Cloudinary
+			ImageUploadResponse imageUploadResponse = await CloudinaryService.Instance.UploadImage(base64);
 
-			if(data.Tables[0].Rows.Count == 0)
+			if(imageUploadResponse == null)
 			{
 				return null;
 			}
 
-			DataRow T_image = data.Tables[0].Rows[0];
+			// Insert image response to DB
+			var insertedDataDB = Dal.Instance.InsertImage(
+				imageUploadResponse.ImageId,
+				imageUploadResponse.Uri,
+				imageUploadResponse.Height,
+				imageUploadResponse.Width,
+				imageUploadResponse.Format,
+				imageUploadResponse.CreatedAt
+			);
 
-			Image newImage = new Image()
-			{
-				Id = int.Parse(T_image["Id"].ToString()),
-				Uri = T_image["Uri"].ToString(),
-				Height = int.Parse(T_image["Height"].ToString()),
-				Width = int.Parse(T_image["Width"].ToString())
-			};
+			if(insertedDataDB == null) {
+				return null;
+			}
 
-			return newImage;
+			return imageUploadResponse;
 		}
 	}
 

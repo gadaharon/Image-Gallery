@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace BAL
+namespace CLOUDINARY
 {
-	public class Image
+	public class ImageUploadResponse
 	{
 		public int Id { get; set; }
+		public string ImageId { get; set; }
 		public string Uri { get; set; }
 		public int Height { get; set; }
 		public int Width { get; set; }
-
+		public string Format { get; set; }
+		public string CreatedAt { get; set; }
 	}
 }

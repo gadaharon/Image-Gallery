@@ -112,6 +112,10 @@
       <Project>{34bd13b4-a733-4f12-8e5f-a8d8433d6a0e}</Project>
       <Name>BAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CLOUDINARY\CLOUDINARY.csproj">
+      <Project>{2b31a513-98ab-429c-9bb7-0413ba2e56e2}</Project>
+      <Name>CLOUDINARY</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

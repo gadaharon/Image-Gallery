@@ -52,10 +52,10 @@ namespace DAL
 
 				return images;
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
-
-				throw new Exception(e.Message);
+				//throw new Exception(e.Message);
+				return null;
 			}
 			finally
 			{
@@ -67,7 +67,7 @@ namespace DAL
 		}
 
 		// Create Image
-		public DataSet CreateImage(string Uri, int Height, int Width)
+		public DataSet InsertImage(string ImageId, string Uri, int Height, int Width, string Format, string CreatedAt)
 		{
 			try
 			{
@@ -75,21 +75,24 @@ namespace DAL
 				
 				SqlCommand command = new SqlCommand("CreateImage", Connection);
 				command.CommandType = CommandType.StoredProcedure;
+				command.Parameters.Add(new SqlParameter("ImageId", ImageId));
 				command.Parameters.Add(new SqlParameter("Uri", Uri));
 				command.Parameters.Add(new SqlParameter("Height", Height));
 				command.Parameters.Add(new SqlParameter("Width", Width));
-				
+				command.Parameters.Add(new SqlParameter("Format", Format));
+				command.Parameters.Add(new SqlParameter("CreatedAt", CreatedAt));
+
 				SqlDataAdapter adapter = new SqlDataAdapter(command);
 
 				DataSet data = new DataSet();
 
-				adapter.Fill(data);
+				int rowsAffected = adapter.Fill(data);
 
-				return data;
+				return rowsAffected == 0 ? null : data;
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
-				throw new Exception(e.Message);
+				return null;
 			}
 			finally
 			{
