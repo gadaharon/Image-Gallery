@@ -43,6 +43,7 @@ const ImageGalleryScreen = () => {
     </View>
   );
 
+  // Get all images
   async function getImages() {
     try {
       const response = await axios.get(
@@ -55,6 +56,7 @@ const ImageGalleryScreen = () => {
     }
   }
 
+  // Create new image
   async function addImage() {
     try {
       const image = await Camera.openCamera(cameraConfig);
