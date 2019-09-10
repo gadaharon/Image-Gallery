@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-import {FlatList, Image, StyleSheet, View} from 'react-native';
+import {FlatList, Image, StyleSheet, View, ActivityIndicator } from 'react-native';
 import Button from '../components/Button';
 import Camera from 'react-native-image-crop-picker';
 
@@ -14,6 +14,7 @@ const cameraConfig = {
 
 const ImageGalleryScreen = () => {
   const [images, setImage] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Get all images when screen loaded
@@ -30,6 +31,7 @@ const ImageGalleryScreen = () => {
 
   return (
     <View style={styles.container}>
+      {isLoading && <ActivityIndicator />}
       <FlatList
         data={images}
         extraData={images}
@@ -47,6 +49,7 @@ const ImageGalleryScreen = () => {
         'http://gadaharon-001-site1.gtempurl.com/api/Images',
       );
       setImage(response.data);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -57,13 +60,16 @@ const ImageGalleryScreen = () => {
       const image = await Camera.openCamera(cameraConfig);
       const data = {Base64: `data:${image.mime};base64,${image.data}`};
       try {
+        setIsLoading(true);
         const response = await axios.post(
           'http://gadaharon-001-site1.gtempurl.com/api/Images',
           data,
         );
         setImage([...images, response.data]);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -76,7 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   imageContainer: {
-    margin: 15,
+    margin: 15
   },
   image: {
     height: 100,
