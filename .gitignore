@@ -6,7 +6,7 @@ build
 bin
 *.dll
 
-package-lock.json
+client/package-lock.json
 
 .DS_Store
 
