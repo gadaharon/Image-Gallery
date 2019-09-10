@@ -9,11 +9,13 @@
 import React, {Fragment} from 'react';
 import ImageGalleryScreen from './src/screens/ImageGalleryScreen';
 import {StatusBar, SafeAreaView, StyleSheet } from 'react-native';
+import Header from './src/components/Header';
 
 const App = () => {
   return (
     <Fragment>
       <StatusBar barStyle="dark-content" />
+      <Header title="גלרית תמונות" />
       <SafeAreaView style={styles.container}>
         <ImageGalleryScreen />
       </SafeAreaView>

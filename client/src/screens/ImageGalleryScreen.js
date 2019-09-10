@@ -1,14 +1,32 @@
-import React, {useEffect, useState} from 'react';
-import {View, Image, StyleSheet, FlatList, Text, Button} from 'react-native';
 import axios from 'axios';
+import React, {useEffect, useState} from 'react';
+import {FlatList, Image, StyleSheet, View} from 'react-native';
+import Button from '../components/Button';
+import Camera from 'react-native-image-crop-picker';
 
+const cameraConfig = {
+  includeBase64: true,
+  compressImageMaxWidth: 400,
+  compressImageMaxHeight: 400,
+  compressImageQuality: 0.8,
+  mediaType: 'photo',
+};
 
 const ImageGalleryScreen = () => {
   const [images, setImage] = useState([]);
 
   useEffect(() => {
-    getImages()
+    // Get all images when screen loaded
+    getImages();
   }, []);
+
+  const Item = ({item}) => {
+    return (
+      <View style={styles.imageContainer}>
+        <Image style={styles.image} source={{uri: item.Uri}} />
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -16,38 +34,40 @@ const ImageGalleryScreen = () => {
         data={images}
         extraData={images}
         numColumns={3}
-        renderItem={({item}) => (
-          <View style={styles.imageContainer}>
-            <Image style={styles.image} source={{uri: item.Uri}} />
-          </View>
-        )}
-        keyExtractor={(item, index) => index.toString()}
+        renderItem={({item}) => <Item item={item} />}
+        keyExtractor={(item, index) => item.ImageId}
       />
-
-      <Button
-        title="Add Image"
-        onPress={() => addImage()}
-      />
+      <Button title="הוסף תמונה" onPress={addImage} />
     </View>
   );
 
-  async function getImages(){
+  async function getImages() {
     try {
-      const response = await axios.get('http://gadaharon-001-site1.gtempurl.com/api/Images')
-      setImage(response.data);      
-      } catch (error) {
-        console.log(error);
-      }
+      const response = await axios.get(
+        'http://gadaharon-001-site1.gtempurl.com/api/Images',
+      );
+      setImage(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async function addImage() {
-    setImage([
-      ...images,
-      {
-        Uri:
-          'https://www.humanesociety.org/sites/default/files/styles/768x326/public/2018/08/kitten-440379.jpg?h=f6a7b1af&itok=vU0J0uZR',
-      },
-    ])
+    try {
+      const image = await Camera.openCamera(cameraConfig);
+      const data = {Base64: `data:${image.mime};base64,${image.data}`};
+      try {
+        const response = await axios.post(
+          'http://gadaharon-001-site1.gtempurl.com/api/Images',
+          data,
+        );
+        setImage([...images, response.data]);
+      } catch (error) {
+        console.log(error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
 
@@ -56,11 +76,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   imageContainer: {
-    margin: 10
+    margin: 15,
   },
   image: {
     height: 100,
     width: 100,
+  },
+  addImage: {
+    margin: 10,
+    borderRadius: 15,
   },
 });
 
