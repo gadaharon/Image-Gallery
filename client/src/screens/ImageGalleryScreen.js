@@ -52,6 +52,7 @@ const ImageGalleryScreen = () => {
       setImage(response.data);
       setIsLoading(false);
     } catch (error) {
+      alert(error);
       console.log(error);
     }
   }
