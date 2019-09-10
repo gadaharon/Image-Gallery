@@ -1,6 +1,6 @@
 # Image-Gallery
 
-**About**
+## About
 
  Image gallery react-native application with .NET WebApi and Cloudinary(a cloud service to store images).
 
