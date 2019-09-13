@@ -7,9 +7,9 @@ namespace CLOUDINARY
 {
 	public class CloudinaryConfig
 	{
-		protected static readonly string NAME = "imagegalleryfiles";
-		protected static readonly string API_KEY = "973553987464857";
-		protected static readonly string SECRET = "D1Geyqsc0xtVN-lk_s1ma9PWQGw";
+		protected static readonly string NAME = "CLOUD_NAME";
+		protected static readonly string API_KEY = "API_KEY";
+		protected static readonly string SECRET = "SECRET";
 
 	}
 }
